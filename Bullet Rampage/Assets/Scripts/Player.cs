@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
                 Vector3 DistanceToTarget = hit.point - _9mmBullet.transform.position;
                 bulletForceDirection = DistanceToTarget.normalized;
                 clickPosition = hit.point;
-                Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
+                //Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
                 //Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
                 //Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow);
             }

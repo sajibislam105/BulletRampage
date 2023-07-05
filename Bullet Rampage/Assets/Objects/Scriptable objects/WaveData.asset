@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f18f6ded2ea914ca3e54d4147c3407, type: 3}
+  m_Name: WaveData
+  m_EditorClassIdentifier: 
+  Waves:
+  - WaveName: First Wave
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 2
+    SpawnRate: 1
+  - WaveName: Second Wave
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 3
+    SpawnRate: 1.5
+  - WaveName: Final Wave
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 5
+    SpawnRate: 2
