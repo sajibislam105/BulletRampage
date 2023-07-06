@@ -12,21 +12,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: 9mmBullet Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
+      propertyPath: m_TagString
+      value: Bullet
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34,11 +38,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.34
+      value: 1.63
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.547
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       propertyPath: m_LocalRotation.w
@@ -75,6 +79,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
       insertIndex: -1
       addedObject: {fileID: 453657102635004123}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5385358999862011780}
   m_SourcePrefab: {fileID: 100100000, guid: 53a4fc60406865c4f9d0707f1e13e3ad, type: 3}
 --- !u!1 &6724536569553243604 stripped
 GameObject:
@@ -108,3 +115,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &5385358999862011780
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6724536569553243604}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0051295077
+  m_Height: 0.029895866
+  m_Direction: 1
+  m_Center: {x: -0.000000013504177, y: 0.000000038184236, z: 0.000000012572857}

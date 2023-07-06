@@ -101,7 +101,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -122,9 +122,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyData: {fileID: 11400000, guid: 388c3bfeea4b8f340abca03a6f8ff69d, type: 2}
-  _navMeshAgent: {fileID: 3268014126410156813}
-  _navMeshSurface: {fileID: 0}
-  _destinationPosition: {fileID: 0}
 --- !u!195 &3268014126410156813
 NavMeshAgent:
   m_ObjectHideFlags: 0

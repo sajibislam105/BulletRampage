@@ -1,12 +1,21 @@
+using System;
+using OpenCover.Framework.Model;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Action<float,Vector3> BulletGenerateAction;
+
     private Rigidbody _rigidbody;
     private Animator _animator;
     [SerializeField] private GameObject _9mmBullet;
     
     [SerializeField] private float PlayerMoveSpeed = 5f;
+    [SerializeField] private float PlayerHealth = 100f;
+    private float startTime;
+    private float survivedTime;
+    
     private float velocityZ = 0.0f;
     private float velocityX = 0.0f;
 
@@ -18,14 +27,17 @@ public class Player : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
+        _9mmBullet.transform.position = transform.position;
+        _9mmBullet.transform.position = transform.position + new Vector3(0,1.5f,0);
     }
 
     // Update is called once per frame
     void Update()
-    {
-        PlayerMovement();
-        PlayerAnimation();
-        CastRay();
+    {       
+            PlayerMovement();
+            PlayerAnimation();
+            CastRay();
+            Fire();
     }
 
     void PlayerMovement()
@@ -55,12 +67,18 @@ public class Player : MonoBehaviour
         }
 
         // Calculate movement vector
-        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * PlayerMoveSpeed * Time.deltaTime;
+        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * (PlayerMoveSpeed * Time.deltaTime);
 
         // Apply movement to the rigidbody
         _rigidbody.MovePosition(transform.position + movement);
+        
+        //Topdown Rotation
+        /*
+         Vector3 TargetDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - _rigidbody.position;
+         float angle = Mathf.Atan2(TargetDirection.z, TargetDirection.x) * Mathf.Rad2Deg - 90f;
+         _rigidbody.rotation = Quaternion.Euler(angle,0,angle);
+         */
     }
-
     void PlayerAnimation()
     {
         // for going forward animation
@@ -114,7 +132,14 @@ public class Player : MonoBehaviour
         _animator.SetFloat("VelocityZ", velocityZ); //for going forward
         _animator.SetFloat("VelocityX", velocityX);
     }
-
+    void Fire()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //fire
+            BulletGenerateAction?.Invoke(1f,bulletForceDirection);
+        }
+    }
     void CastRay()
     {
         float raycastDistance = 100f;
@@ -125,17 +150,17 @@ public class Player : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, raycastDistance))
             {
-                Vector3 DistanceToTarget = hit.point - _9mmBullet.transform.position;
-                bulletForceDirection = DistanceToTarget.normalized;
+                var offset = transform.position + new Vector3(0,1.5f,0);
+                bulletForceDirection = (hit.point - offset).normalized;
                 clickPosition = hit.point;
-                //Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
-                //Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green);
-                //Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow);
+                Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
+                Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green,3f);
+                Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow, 3f);
             }
             else
             {
-                //Debug.Log("Raycast hit nothing.");
-                //Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.red);
+                Debug.Log("Raycast hit nothing.");
+                Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.red,3f);
             }
         }
     }

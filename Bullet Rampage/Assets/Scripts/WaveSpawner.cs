@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -6,6 +7,7 @@ using UnityEngine.AI;
 
 public class WaveSpawner : MonoBehaviour
 {
+    public Action<Transform> EnemyGenerateCountAction;
     public enum SpawnState
     {
         SPAWNING,
@@ -14,9 +16,9 @@ public class WaveSpawner : MonoBehaviour
     };
     
     [SerializeField] private WaveData _waveData;
-
     private int nextWave = 0;
-    [SerializeField]    private float timeBetweenWaves = 5f;
+    
+    [SerializeField] private float timeBetweenWaves = 2f;
     public float waveCountDown;
     private float searchCountDown = 1f;
 
@@ -28,7 +30,7 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private NavMeshSurface _groundNavMeshSurface;
     [SerializeField] private Player _player;
     private NavMeshAgent _navMeshAgent;
-   
+
     void Start()
     {
         _groundNavMeshSurface = groundObject.GetComponent<NavMeshSurface>();
@@ -126,8 +128,9 @@ public class WaveSpawner : MonoBehaviour
         Transform enemyClone = Instantiate(_enemy, _sp.position, _sp.rotation);
 
         _navMeshAgent = enemyClone.GetComponent<NavMeshAgent>();
-        _navMeshAgent.agentTypeID = _groundNavMeshSurface.agentTypeID;
+        //_navMeshAgent.agentTypeID = _groundNavMeshSurface.agentTypeID;
         _groundNavMeshSurface.AddData();
         _navMeshAgent.SetDestination(_player.transform.position);
+        EnemyGenerateCountAction?.Invoke(enemyClone); // adding to the list
     }
 }
