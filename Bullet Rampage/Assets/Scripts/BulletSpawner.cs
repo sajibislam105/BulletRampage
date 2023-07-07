@@ -7,7 +7,7 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private GameObject BulletContainer;
     [SerializeField ]private Player _player;
     
-    private float forceSize = 5f;
+    private float forceSize = 10f;
 
     private void OnEnable()
     {

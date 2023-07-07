@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -74,19 +75,17 @@ public class WaveSpawner : MonoBehaviour
         {
             waveCountDown -= Time.deltaTime;
         }
-        
     }
 
     void WaveCompleted()
     {
-        Debug.Log("Wave Completed");
-
+        //Debug.Log("Wave Completed");
         state = SpawnState.COUNTING;
         waveCountDown = timeBetweenWaves;
-
         if (nextWave + 1 > _waveData.Waves.Length - 1 )
         {
-            nextWave = 0;
+            //nextWave = 0;
+            _player.PlayerDeadAction?.Invoke();
             Debug.Log("All Waves complete! Lopping...");
         }
         else
@@ -126,9 +125,9 @@ public class WaveSpawner : MonoBehaviour
         //Debug.Log("Spawn Enemy: " + _enemy.name);
         Transform _sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
         Transform enemyClone = Instantiate(_enemy, _sp.position, _sp.rotation);
+        enemyClone.gameObject.name = "EnemyClone";
 
         _navMeshAgent = enemyClone.GetComponent<NavMeshAgent>();
-        //_navMeshAgent.agentTypeID = _groundNavMeshSurface.agentTypeID;
         _groundNavMeshSurface.AddData();
         _navMeshAgent.SetDestination(_player.transform.position);
         EnemyGenerateCountAction?.Invoke(enemyClone); // adding to the list

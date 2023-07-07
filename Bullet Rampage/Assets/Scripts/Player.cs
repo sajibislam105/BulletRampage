@@ -6,12 +6,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Action<float,Vector3> BulletGenerateAction;
+    public Action PlayerDeadAction;
 
     private Rigidbody _rigidbody;
     private Animator _animator;
     [SerializeField] private GameObject _9mmBullet;
     
-    [SerializeField] private float PlayerMoveSpeed = 5f;
+    private float PlayerMoveSpeed = 20f;
     [SerializeField] private float PlayerHealth = 100f;
     private float startTime;
     private float survivedTime;
@@ -153,14 +154,31 @@ public class Player : MonoBehaviour
                 var offset = transform.position + new Vector3(0,1.5f,0);
                 bulletForceDirection = (hit.point - offset).normalized;
                 clickPosition = hit.point;
-                Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
-                Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green,3f);
-                Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow, 3f);
+              //  Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
+              //  Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green,3f);
+               // Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow, 3f);
             }
             else
             {
-                Debug.Log("Raycast hit nothing.");
-                Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.red,3f);
+               // Debug.Log("Raycast hit nothing.");
+               // Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.red,3f);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(gameObject.name + " is hit by "+ other.gameObject.name);
+        if (other.gameObject.name == "EnemyBullet" || other.gameObject.name == "EnemyClone")
+        {
+            //Debug.Log(gameObject.name + " is hit by bullet");
+            PlayerHealth -= 20f;
+            Destroy(other.gameObject);  //bullet
+            if (PlayerHealth <= 0)
+            {
+                Debug.Log("player dead");
+                PlayerDeadAction?.Invoke();
+                Debug.Log("invoke called");
             }
         }
     }

@@ -275,11 +275,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61848a393e5a3042921c730f22d6494, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _EnemyCount: {fileID: 888072811}
-  _Timer: {fileID: 168338796}
-  _SurvivedTime: {fileID: 1888643806}
-  _Score: {fileID: 892269808}
-  enemyKillCount: 0
+  _player: {fileID: 1815204369}
+  _EnemyCountText: {fileID: 888072811}
+  _timerText: {fileID: 168338796}
+  _survivedTimeText: {fileID: 1888643806}
+  _scoreText: {fileID: 892269808}
+  survivedTime: 0
 --- !u!114 &235981919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1080,7 +1081,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _9mmBullet: {fileID: 6724536569553243604, guid: cbecd704f5515e345ab40155a692d989, type: 3}
-  PlayerMoveSpeed: 5
   PlayerHealth: 100
   bulletForceDirection: {x: 0, y: 0, z: 0}
 --- !u!4 &1815204371 stripped
@@ -1290,8 +1290,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12.266, y: 503}
-  m_SizeDelta: {x: 627.61, y: 170.407}
+  m_AnchoredPosition: {x: -12.266, y: 245}
+  m_SizeDelta: {x: 627.61, y: 331.411}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1888643806
 MonoBehaviour:
@@ -1320,7 +1320,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 7
     m_MaxSize: 75
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
