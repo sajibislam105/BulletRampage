@@ -7,13 +7,14 @@ public class Player : MonoBehaviour
 {
     public Action<float,Vector3> BulletGenerateAction;
     public Action PlayerDeadAction;
+    public Action<float> PlayerHealthUpdateAction;
 
     private Rigidbody _rigidbody;
     private Animator _animator;
     [SerializeField] private GameObject _playerBullet;
     
     private float PlayerMoveSpeed = 40f;
-    [SerializeField] private float PlayerHealth = 100f;
+    private float PlayerHealth = 100f;
     private float startTime;
     private float survivedTime;
     
@@ -29,7 +30,6 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _playerBullet.transform.position = transform.position;
-        //_playerBullet.transform.position = transform.position + new Vector3(0,1.5f,0);
     }
 
     // Update is called once per frame
@@ -173,6 +173,7 @@ public class Player : MonoBehaviour
         {
             //Debug.Log(gameObject.name + " is hit by bullet");
             PlayerHealth -= 20f;
+            PlayerHealthUpdateAction?.Invoke(PlayerHealth);
             Destroy(other.gameObject);  //bullet
             if (PlayerHealth <= 0)
             {

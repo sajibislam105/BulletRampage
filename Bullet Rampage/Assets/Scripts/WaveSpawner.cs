@@ -13,7 +13,8 @@ public class WaveSpawner : MonoBehaviour
     {
         SPAWNING,
         WATING,
-        COUNTING
+        COUNTING,
+        FINISHED
     };
     
     [SerializeField] private WaveData _waveData;
@@ -31,11 +32,9 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private NavMeshSurface _groundNavMeshSurface;
     [SerializeField] private Player _player;
     private NavMeshAgent _navMeshAgent;
-    private bool levelcheck;
 
     void Start()
     {
-        levelcheck = false;
         _groundNavMeshSurface = groundObject.GetComponent<NavMeshSurface>();
         // Check if the NavMeshSurface component is attached to the groundObject
         if (_groundNavMeshSurface == null)
@@ -49,8 +48,7 @@ public class WaveSpawner : MonoBehaviour
             Debug.LogError("No Spawn point referenced");
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         if (state == SpawnState.WATING)
@@ -58,7 +56,7 @@ public class WaveSpawner : MonoBehaviour
             if (!EnemyIsAlive())
             {
                 //Begin a new round
-               WaveCompleted();
+                WaveCompleted();
             }
             else
             {
@@ -67,10 +65,11 @@ public class WaveSpawner : MonoBehaviour
         }
         if (waveCountDown <= 0)
         {
-            if (state!= SpawnState.SPAWNING)
+            if (state != SpawnState.SPAWNING && state != SpawnState.FINISHED)
             {
                 // start spawning wave
-                StartCoroutine(SpawnWave(_waveData.Waves[nextWave])); //accessed the array class of S.O. using the reference
+                StartCoroutine(
+                    SpawnWave(_waveData.Waves[nextWave])); //accessed the array class of S.O. using the reference
             }
         }
         else
@@ -87,9 +86,9 @@ public class WaveSpawner : MonoBehaviour
         if (nextWave + 1 > _waveData.Waves.Length - 1 )
         {
             //nextWave = 0;
-            levelcheck = true;
+            //Debug.Log("All Waves complete! Lopping...");
+            state = SpawnState.FINISHED;
             _player.PlayerDeadAction?.Invoke();
-            Debug.Log("All Waves complete! Lopping...");
         }
         else
         {
@@ -113,17 +112,13 @@ public class WaveSpawner : MonoBehaviour
     {
         Debug.Log("Spawning Wave: "+ _waves.WaveName);
         state = SpawnState.SPAWNING;
-        if (!levelcheck)
-        {
             //spawn
             for (int i = 0; i < _waves.count; i++)
             {
                 SpawnEnemy(_waves.enemy);
                 yield return new WaitForSeconds(1f / _waves.SpawnRate);
             }
-        }
-
-        state = SpawnState.WATING;
+            state = SpawnState.WATING;
         yield break;
     }
 
