@@ -31,9 +31,11 @@ public class WaveSpawner : MonoBehaviour
     [SerializeField] private NavMeshSurface _groundNavMeshSurface;
     [SerializeField] private Player _player;
     private NavMeshAgent _navMeshAgent;
+    private bool levelcheck;
 
     void Start()
     {
+        levelcheck = false;
         _groundNavMeshSurface = groundObject.GetComponent<NavMeshSurface>();
         // Check if the NavMeshSurface component is attached to the groundObject
         if (_groundNavMeshSurface == null)
@@ -85,6 +87,7 @@ public class WaveSpawner : MonoBehaviour
         if (nextWave + 1 > _waveData.Waves.Length - 1 )
         {
             //nextWave = 0;
+            levelcheck = true;
             _player.PlayerDeadAction?.Invoke();
             Debug.Log("All Waves complete! Lopping...");
         }
@@ -110,12 +113,16 @@ public class WaveSpawner : MonoBehaviour
     {
         Debug.Log("Spawning Wave: "+ _waves.WaveName);
         state = SpawnState.SPAWNING;
-        //spawn
-        for (int i = 0; i < _waves.count; i++)
+        if (!levelcheck)
         {
-            SpawnEnemy(_waves.enemy);
-            yield return new WaitForSeconds(1f/_waves.SpawnRate);
+            //spawn
+            for (int i = 0; i < _waves.count; i++)
+            {
+                SpawnEnemy(_waves.enemy);
+                yield return new WaitForSeconds(1f / _waves.SpawnRate);
+            }
         }
+
         state = SpawnState.WATING;
         yield break;
     }

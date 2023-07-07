@@ -7,7 +7,7 @@ public class BulletSpawner : MonoBehaviour
     [SerializeField] private GameObject BulletContainer;
     [SerializeField ]private Player _player;
     
-    private float forceSize = 10f;
+    private float forceSize = 30f;
 
     private void OnEnable()
     {
@@ -21,14 +21,12 @@ public class BulletSpawner : MonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            //GameObject BulletClone = Instantiate(OrignalBullet, OrignalBullet.transform.position, OrignalBullet.transform.rotation);
             GameObject BulletClone = Instantiate(OrignalBullet, BulletContainer.transform.position, OrignalBullet.transform.rotation);
             BulletClone.transform.parent = BulletContainer.transform;
             BulletClone.name = "Bullet";
 
             BulletClone.GetComponent<Rigidbody>().AddForce(forceDirection * forceSize,ForceMode.Impulse);
-            //BulletClone.GetComponent<Rigidbody>().velocity = forceDirection*forceSize;
-            //Destroy(BulletClone,5f);
+            Destroy(BulletClone,10f);
         }
     }
 }

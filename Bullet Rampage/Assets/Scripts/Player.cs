@@ -10,9 +10,9 @@ public class Player : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private Animator _animator;
-    [SerializeField] private GameObject _9mmBullet;
+    [SerializeField] private GameObject _playerBullet;
     
-    private float PlayerMoveSpeed = 20f;
+    private float PlayerMoveSpeed = 40f;
     [SerializeField] private float PlayerHealth = 100f;
     private float startTime;
     private float survivedTime;
@@ -28,8 +28,8 @@ public class Player : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
-        _9mmBullet.transform.position = transform.position;
-        _9mmBullet.transform.position = transform.position + new Vector3(0,1.5f,0);
+        _playerBullet.transform.position = transform.position;
+        //_playerBullet.transform.position = transform.position + new Vector3(0,1.5f,0);
     }
 
     // Update is called once per frame
@@ -151,12 +151,12 @@ public class Player : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, raycastDistance))
             {
-                var offset = transform.position + new Vector3(0,1.5f,0);
-                bulletForceDirection = (hit.point - offset).normalized;
+                //var offset = transform.position + new Vector3(0,0f,0);
+                bulletForceDirection = (hit.point - transform.position).normalized;
                 clickPosition = hit.point;
-              //  Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
-              //  Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green,3f);
-               // Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow, 3f);
+                //Debug.Log("Hit object: " + hit.collider.gameObject.name + " Hit position:  " + clickPosition);
+                //Debug.DrawRay(ray.origin, ray.direction * raycastDistance, Color.green,3f);
+                //Debug.DrawRay(transform.position, bulletForceDirection * raycastDistance, Color.yellow, 3f);
             }
             else
             {

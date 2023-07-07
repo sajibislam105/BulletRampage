@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     public static Action EnemyKillCountAction;
 
     [SerializeField] private NavMeshAgent _navMeshAgent;
-    [SerializeField] private GameObject enemyBulletContainer;
     [SerializeField] private GameObject Bullet;
     
     [SerializeField]private EnemyData _enemyData;
@@ -66,13 +65,15 @@ public class Enemy : MonoBehaviour
         
         if (timeBtwShots<- 0)
         {
-            GameObject BulletClone = Instantiate(Bullet, enemyBulletContainer.transform.position, enemyBulletContainer.transform.rotation);
-            BulletClone.transform.parent = enemyBulletContainer.transform;
-            _playerDirection = (GameObject.FindGameObjectWithTag("Player").transform.position - transform.position).normalized;
-            BulletClone.GetComponent<Rigidbody>().AddForce(_playerDirection * 5f, ForceMode.Impulse);
+            //BulletClone.transform.parent = enemyBulletContainer.transform;
+            GameObject BulletClone = Instantiate(Bullet, transform.position, transform.rotation);
+            var offsetBullet = (GameObject.FindGameObjectWithTag("Player").transform.position) + new Vector3(0, 2, 0);
+            _playerDestination = (offsetBullet - transform.position).normalized;          
+            //_playerDirection = (GameObject.FindGameObjectWithTag("Player").transform.position - transform.position).normalized;
+            BulletClone.GetComponent<Rigidbody>().AddForce(_playerDirection * 10f, ForceMode.Impulse);
             BulletClone.name = "EnemyBullet ";
             BulletClone.tag = "EnemyBullet";
-            Destroy(BulletClone,3f);
+            Destroy(BulletClone,20f);
             timeBtwShots = startTimeBtwShots; 
         }
         else
