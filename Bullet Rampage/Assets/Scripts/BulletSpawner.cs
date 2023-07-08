@@ -21,10 +21,9 @@ public class BulletSpawner : MonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            GameObject BulletClone = Instantiate(OrignalBullet, BulletContainer.transform.position, OrignalBullet.transform.rotation);
+            GameObject BulletClone = Instantiate(OrignalBullet, _player.transform.position, OrignalBullet.transform.rotation);
             BulletClone.transform.parent = BulletContainer.transform;
             BulletClone.name = "Bullet";
-
             BulletClone.GetComponent<Rigidbody>().AddForce(forceDirection * forceSize,ForceMode.Impulse);
             Destroy(BulletClone,10f);
         }

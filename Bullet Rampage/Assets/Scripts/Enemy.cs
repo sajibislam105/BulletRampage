@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -49,7 +47,6 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.name == "Bullet")
         {
-            Debug.Log("Hit by bullet");
             enemyHealth -= 50f;
             Destroy(other.gameObject);  //bullet
             if (enemyHealth <= 0)

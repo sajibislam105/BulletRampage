@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,7 +54,6 @@ public class ScoreManager : MonoBehaviour
     private void EnemyKillCount()
     {
         enemyKillCount++;
-        Debug.Log(enemyKillCount);
     }
     void result()
     {

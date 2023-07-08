@@ -1,6 +1,4 @@
 using System;
-using OpenCover.Framework.Model;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -12,8 +10,9 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private Animator _animator;
     [SerializeField] private GameObject _playerBullet;
-    
+
     private float PlayerMoveSpeed = 40f;
+    private float rotationSpeed = 40f;
     private float PlayerHealth = 100f;
     private float startTime;
     private float survivedTime;
@@ -23,7 +22,6 @@ public class Player : MonoBehaviour
 
     private Vector3 clickPosition;
     public Vector3 bulletForceDirection;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +38,7 @@ public class Player : MonoBehaviour
             CastRay();
             Fire();
     }
-
+    
     void PlayerMovement()
     {
         float moveHorizontal = 0f;
@@ -72,13 +70,18 @@ public class Player : MonoBehaviour
 
         // Apply movement to the rigidbody
         _rigidbody.MovePosition(transform.position + movement);
-        
-        //Topdown Rotation
-        /*
-         Vector3 TargetDirection = Camera.main.ScreenToWorldPoint(Input.mousePosition) - _rigidbody.position;
-         float angle = Mathf.Atan2(TargetDirection.z, TargetDirection.x) * Mathf.Rad2Deg - 90f;
-         _rigidbody.rotation = Quaternion.Euler(angle,0,angle);
-         */
+
+        var Raymousepos = new Vector3(0,0,0);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit raycastHit;
+        if (Physics.Raycast(ray,out raycastHit, 100f))
+        {
+            Raymousepos = raycastHit.point;
+            //Debug.DrawRay(ray.origin,ray.direction * 100f ,Color.red);            
+        }
+        Vector3 aimDirection = (Raymousepos - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(aimDirection);
+
     }
     void PlayerAnimation()
     {
@@ -168,7 +171,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(gameObject.name + " is hit by "+ other.gameObject.name);
+        //Debug.Log(gameObject.name + " is hit by "+ other.gameObject.name);
         if (other.gameObject.name == "EnemyBullet" || other.gameObject.name == "EnemyClone")
         {
             //Debug.Log(gameObject.name + " is hit by bullet");
@@ -177,9 +180,9 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);  //bullet
             if (PlayerHealth <= 0)
             {
-                Debug.Log("player dead");
+               // Debug.Log("player dead");
                 PlayerDeadAction?.Invoke();
-                Debug.Log("invoke called");
+               // Debug.Log("invoke called");
             }
         }
     }

@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
 {
     [SerializeField]private WaveSpawner _waveSpawner;
     private List<Transform> enemyList = new List<Transform>();
-
+    
     private void OnEnable()
     {
         _waveSpawner.EnemyGenerateCountAction += EnemyGenerated;

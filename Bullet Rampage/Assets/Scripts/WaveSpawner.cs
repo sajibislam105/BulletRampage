@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -110,7 +108,7 @@ public class WaveSpawner : MonoBehaviour
     }
     IEnumerator SpawnWave(WaveData.Wave _waves)
     {
-        Debug.Log("Spawning Wave: "+ _waves.WaveName);
+//        Debug.Log("Spawning Wave: "+ _waves.WaveName);
         state = SpawnState.SPAWNING;
             //spawn
             for (int i = 0; i < _waves.count; i++)
@@ -124,7 +122,6 @@ public class WaveSpawner : MonoBehaviour
 
     void SpawnEnemy(Transform _enemy)
     {
-        //Debug.Log("Spawn Enemy: " + _enemy.name);
         Transform _sp = spawnPoints[UnityEngine.Random.Range(0, spawnPoints.Length)];
         Transform enemyClone = Instantiate(_enemy, _sp.position, _sp.rotation);
         enemyClone.gameObject.name = "EnemyClone";
