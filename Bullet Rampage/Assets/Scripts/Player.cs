@@ -10,10 +10,10 @@ public class Player : MonoBehaviour
     private Rigidbody _rigidbody;
     private Animator _animator;
     [SerializeField] private GameObject _playerBullet;
+    [SerializeField] private Joystick _joystick;
 
-    private float PlayerMoveSpeed = 40f;
-    private float rotationSpeed = 40f;
-    private float PlayerHealth = 100f;
+    [SerializeField]private float PlayerMoveSpeed = 40f;
+    public float PlayerHealth = 100f;
     private float startTime;
     private float survivedTime;
     
@@ -33,38 +33,70 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {       
-            PlayerMovement();
-            PlayerAnimation();
-            CastRay();
-            Fire();
+            PlayerTouchMovement();    
+            //PlayerMovement();
+            //PlayerAnimation();
+            //CastRay();
+           // Fire();
+          // FireByTouch();
+    }
+
+    void PlayerTouchMovement()
+    {
+        float moveHorizontal = _joystick.Horizontal;
+        float moveVertical = _joystick.Vertical;
+        
+        // Player Touch movement
+        Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * (PlayerMoveSpeed * Time.deltaTime);
+        _rigidbody.MovePosition(transform.position + movement);
+        _rigidbody.rotation = Quaternion.LookRotation(movement);
+        
+        //Animation Movement
+        _animator.SetFloat("VelocityZ", moveVertical); //for going forward
+        _animator.SetFloat("VelocityX", moveHorizontal);
     }
     
     void PlayerMovement()
     {
         float moveHorizontal = 0f;
         float moveVertical = 0f;
-
+        
         // Check for input
         if (Input.GetKey(KeyCode.W))
         {
             moveVertical = 1f;
         }
-
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             moveVertical = -1f;
+        }
+        else
+        {
+            moveVertical = 0;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
             moveHorizontal = -1f;
         }
-
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             moveHorizontal = 1f;
         }
+        else
+        {
+            moveHorizontal = 0;
+        }
 
+        /*
+        if (Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false && Input.GetKey(KeyCode.W) == false && Input.GetKey(KeyCode.S) == false)
+        {
+            var NoMovement = new Vector3(0, 0, 0);
+            _rigidbody.MovePosition(transform.position + NoMovement);
+        }
+        */
+
+        Debug.Log(moveHorizontal +"   "+ moveVertical);
         // Calculate movement vector
         Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * (PlayerMoveSpeed * Time.deltaTime);
 
@@ -81,6 +113,8 @@ public class Player : MonoBehaviour
         }
         Vector3 aimDirection = (Raymousepos - transform.position).normalized;
         transform.rotation = Quaternion.LookRotation(aimDirection);
+        //vector3 aimDirection = (Raymousepos - .position).normalized;
+        //transform.rotation = Quaternion.LookRotation(aimDirection,Vector3.up);
 
     }
     void PlayerAnimation()
@@ -144,6 +178,31 @@ public class Player : MonoBehaviour
             BulletGenerateAction?.Invoke(1f,bulletForceDirection);
         }
     }
+
+    public void FireByTouch()
+    {
+        Debug.Log("Button Clicked");
+        bulletForceDirection = Vector3.forward;
+        BulletGenerateAction?.Invoke(1f,bulletForceDirection);
+        
+        float raycastDistance = 100f;
+      /*
+       if(Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(1);
+            Ray ray = Camera.main.ScreenPointToRay(touch.position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, raycastDistance))
+            {
+               var TouchPosition = hit.point;
+               //bulletForceDirection = new Vector3(transform.position.x, 0f, transform.position.z) + new Vector3(1,0,1);
+               //bulletForceDirection = (TouchPosition - transform.position).normalized;
+            }
+            Debug.DrawRay(ray.origin,ray.direction*raycastDistance,Color.red);
+            BulletGenerateAction?.Invoke(1f,bulletForceDirection);
+        }*/
+    }
+
     void CastRay()
     {
         float raycastDistance = 100f;

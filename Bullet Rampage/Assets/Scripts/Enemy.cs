@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        EnemyFire();
+        //EnemyFire();
         _playerDestination = GameObject.FindGameObjectWithTag("Player").transform.position;
         _navMeshAgent.SetDestination(_playerDestination);
     }

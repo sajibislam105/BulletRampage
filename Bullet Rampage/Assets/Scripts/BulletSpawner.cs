@@ -25,6 +25,10 @@ public class BulletSpawner : MonoBehaviour
             BulletClone.transform.parent = BulletContainer.transform;
             BulletClone.name = "Bullet";
             BulletClone.GetComponent<Rigidbody>().AddForce(forceDirection * forceSize,ForceMode.Impulse);
+            if (_player.PlayerHealth <= 0)
+            {
+                _player.BulletGenerateAction -= SpawnBullet;
+            }
             Destroy(BulletClone,10f);
         }
     }
