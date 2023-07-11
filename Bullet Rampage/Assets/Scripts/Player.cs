@@ -22,7 +22,11 @@ public class Player : MonoBehaviour
 
     private Vector3 clickPosition;
     public Vector3 bulletForceDirection;
-    // Start is called before the first frame update
+    private Vector3 nearestEnemyDirection = Vector3.zero;
+    
+    //shooting speed
+    private float shootDelay = 0.5f;
+    private float shootTimer = 0f;
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -30,15 +34,16 @@ public class Player : MonoBehaviour
         _playerBullet.transform.position = transform.position;
     }
 
-    // Update is called once per frame
+    
     void Update()
     {       
             PlayerTouchMovement();    
             //PlayerMovement();
             //PlayerAnimation();
             //CastRay();
-           // Fire();
-          // FireByTouch();
+            // Fire();
+            // FireByTouch();
+            FindClosestEnemy();
     }
 
     void PlayerTouchMovement()
@@ -49,8 +54,14 @@ public class Player : MonoBehaviour
         // Player Touch movement
         Vector3 movement = new Vector3(moveHorizontal, 0f, moveVertical) * (PlayerMoveSpeed * Time.deltaTime);
         _rigidbody.MovePosition(transform.position + movement);
-        _rigidbody.rotation = Quaternion.LookRotation(movement);
-        
+        if (nearestEnemyDirection == Vector3.zero)
+        {
+            _rigidbody.rotation = Quaternion.LookRotation(movement);    
+        }
+        else
+        {
+            _rigidbody.rotation = Quaternion.LookRotation(nearestEnemyDirection);            
+        }
         //Animation Movement
         _animator.SetFloat("VelocityZ", moveVertical); //for going forward
         _animator.SetFloat("VelocityX", moveHorizontal);
@@ -112,6 +123,7 @@ public class Player : MonoBehaviour
             //Debug.DrawRay(ray.origin,ray.direction * 100f ,Color.red);            
         }
         Vector3 aimDirection = (Raymousepos - transform.position).normalized;
+        aimDirection.y = 0f;
         transform.rotation = Quaternion.LookRotation(aimDirection);
         //vector3 aimDirection = (Raymousepos - .position).normalized;
         //transform.rotation = Quaternion.LookRotation(aimDirection,Vector3.up);
@@ -178,29 +190,23 @@ public class Player : MonoBehaviour
             BulletGenerateAction?.Invoke(1f,bulletForceDirection);
         }
     }
-
     public void FireByTouch()
     {
         Debug.Log("Button Clicked");
-        bulletForceDirection = Vector3.forward;
-        BulletGenerateAction?.Invoke(1f,bulletForceDirection);
         
-        float raycastDistance = 100f;
-      /*
-       if(Input.touchCount > 0)
+        if (nearestEnemyDirection == Vector3.zero)
         {
-            Touch touch = Input.GetTouch(1);
-            Ray ray = Camera.main.ScreenPointToRay(touch.position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, raycastDistance))
-            {
-               var TouchPosition = hit.point;
-               //bulletForceDirection = new Vector3(transform.position.x, 0f, transform.position.z) + new Vector3(1,0,1);
-               //bulletForceDirection = (TouchPosition - transform.position).normalized;
-            }
-            Debug.DrawRay(ray.origin,ray.direction*raycastDistance,Color.red);
-            BulletGenerateAction?.Invoke(1f,bulletForceDirection);
-        }*/
+            bulletForceDirection = transform.forward;    
+        }
+        else
+        {
+            nearestEnemyDirection.y = 1f; //offsetting the Y-axis value so that it hits the Enemy
+            var normalizeValue = nearestEnemyDirection.normalized;
+            bulletForceDirection = normalizeValue;
+        }
+        
+        var BulletSpawnLimit = 1f; //Number of bullet will generate
+        BulletGenerateAction?.Invoke(BulletSpawnLimit,bulletForceDirection);
     }
 
     void CastRay()
@@ -245,4 +251,47 @@ public class Player : MonoBehaviour
             }
         }
     }
+    void FindClosestEnemy()
+    	{
+    		float distanceToClosestEnemy = Mathf.Infinity;
+    		Enemy closestEnemy = null;
+    		Enemy[] allEnemies = GameObject.FindObjectsOfType<Enemy>();
+
+            if (allEnemies == null || allEnemies.Length < 0)
+            {
+                Debug.Log("No Enemy found");
+            }
+            else
+            {
+                foreach (Enemy currentEnemy in allEnemies)
+                {
+                    float distanceToEnemy = (currentEnemy.transform.position - transform.position).sqrMagnitude;
+                    if (distanceToEnemy < distanceToClosestEnemy)
+                    {
+                        distanceToClosestEnemy = distanceToEnemy;
+                        closestEnemy = currentEnemy;
+                    }
+                }
+                if (closestEnemy == null) 
+                {
+                    Debug.Log("No Enemy is close");
+                }
+                else
+                {
+                    nearestEnemyDirection = closestEnemy.transform.position - transform.position;
+                    nearestEnemyDirection.y = 0;
+                    Debug.DrawLine (transform.position, closestEnemy.transform.position);       
+                    //firing the closest enemy with shoot delay
+                    if(shootTimer >= shootDelay)
+                    {
+                        FireByTouch();
+                        shootTimer = 0f;
+                    }
+                    else
+                    {
+                        shootTimer += Time.deltaTime;                        
+                    }
+                }
+            }
+        }
 }

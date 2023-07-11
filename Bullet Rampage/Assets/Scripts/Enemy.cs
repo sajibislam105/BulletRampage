@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        //EnemyFire();
+         //EnemyFire();
         _playerDestination = GameObject.FindGameObjectWithTag("Player").transform.position;
         _navMeshAgent.SetDestination(_playerDestination);
     }
@@ -47,6 +47,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.name == "Bullet")
         {
+            Debug.Log("Enemy Hit");
             enemyHealth -= 50f;
             Destroy(other.gameObject);  //bullet
             if (enemyHealth <= 0)
