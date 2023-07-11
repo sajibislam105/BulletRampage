@@ -23,7 +23,7 @@ public class BulletSpawner : MonoBehaviour
         {
             var instantiatePosition = _player.transform.position;
             instantiatePosition.y += 1f;
-            GameObject BulletClone = Instantiate(OrignalBullet, instantiatePosition, OrignalBullet.transform.rotation);
+            GameObject BulletClone = Instantiate(OrignalBullet, instantiatePosition, _player.transform.rotation);
             BulletClone.transform.parent = BulletContainer.transform;
             BulletClone.name = "Bullet";
             BulletClone.GetComponent<Rigidbody>().AddForce(forceDirection * forceSize,ForceMode.Impulse);
