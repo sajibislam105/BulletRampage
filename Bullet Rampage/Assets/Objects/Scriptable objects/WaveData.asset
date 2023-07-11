@@ -21,7 +21,19 @@ MonoBehaviour:
     enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
     count: 3
     SpawnRate: 1.5
-  - WaveName: Final Wave
+  - WaveName: Third Wave
     enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
     count: 5
     SpawnRate: 2
+  - WaveName: Fourth Wave
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 10
+    SpawnRate: 2.5
+  - WaveName: Invasion
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 15
+    SpawnRate: 3
+  - WaveName: Final Wave
+    enemy: {fileID: 5629180657000095286, guid: 5e38ebd507311da4092d64b1741c4c36, type: 3}
+    count: 20
+    SpawnRate: 4

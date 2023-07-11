@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Enemy Hit");
             enemyHealth -= 50f;
-            Destroy(other.gameObject);  //bullet
+            Destroy(other.gameObject,0.5f);  //bullet // 0.5f so that audio end play properly.
             if (enemyHealth <= 0)
             {
                 EnemyKillCountAction?.Invoke();

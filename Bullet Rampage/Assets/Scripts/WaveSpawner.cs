@@ -3,7 +3,6 @@ using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
-
 public class WaveSpawner : MonoBehaviour
 {
     public Action<Transform> EnemyGenerateCountAction;
@@ -14,7 +13,8 @@ public class WaveSpawner : MonoBehaviour
         COUNTING,
         FINISHED
     };
-    
+
+    private AudioSource _audioSourceVictoryClip;
     [SerializeField] private WaveData _waveData;
     private int nextWave = 0;
     
@@ -22,7 +22,7 @@ public class WaveSpawner : MonoBehaviour
     public float waveCountDown;
     private float searchCountDown = 1f;
 
-    [SerializeField] private SpawnState state = SpawnState.COUNTING;
+    public SpawnState state = SpawnState.COUNTING;
     [SerializeField]private Transform[] spawnPoints;
 
     //enemy navmesh related
@@ -33,6 +33,7 @@ public class WaveSpawner : MonoBehaviour
 
     void Start()
     {
+        _audioSourceVictoryClip = GetComponent<AudioSource>();
         _groundNavMeshSurface = groundObject.GetComponent<NavMeshSurface>();
         // Check if the NavMeshSurface component is attached to the groundObject
         if (_groundNavMeshSurface == null)
@@ -85,7 +86,9 @@ public class WaveSpawner : MonoBehaviour
         {
             //nextWave = 0;
             //Debug.Log("All Waves complete! Lopping...");
+            _audioSourceVictoryClip.Play();
             state = SpawnState.FINISHED;
+            //
             _player.PlayerDeadAction?.Invoke();
         }
         else

@@ -21,10 +21,13 @@ public class BulletSpawner : MonoBehaviour
     {
         for (int i = 0; i < number; i++)
         {
-            GameObject BulletClone = Instantiate(OrignalBullet, _player.transform.position, OrignalBullet.transform.rotation);
+            var instantiatePosition = _player.transform.position;
+            instantiatePosition.y += 1f;
+            GameObject BulletClone = Instantiate(OrignalBullet, instantiatePosition, OrignalBullet.transform.rotation);
             BulletClone.transform.parent = BulletContainer.transform;
             BulletClone.name = "Bullet";
             BulletClone.GetComponent<Rigidbody>().AddForce(forceDirection * forceSize,ForceMode.Impulse);
+            BulletClone.GetComponent<AudioSource>().Play();
             if (_player.PlayerHealth <= 0)
             {
                 _player.BulletGenerateAction -= SpawnBullet;

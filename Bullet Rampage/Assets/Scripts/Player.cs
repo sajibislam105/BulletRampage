@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private Animator _animator;
+    [SerializeField] private GameObject _gun;
     [SerializeField] private GameObject _playerBullet;
     [SerializeField] private Joystick _joystick;
 
@@ -285,6 +286,7 @@ public class Player : MonoBehaviour
                     if(shootTimer >= shootDelay)
                     {
                         FireByTouch();
+                        onFireActions();
                         shootTimer = 0f;
                     }
                     else
@@ -294,4 +296,16 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+    void onFireActions()
+    {
+        _animator.Play("Still Firing Rifle");
+        
+        /*Transform parentTransform = gameObject.transform;
+        Transform rightHandTransform = _animator.GetBoneTransform(HumanBodyBones.RightHand);
+        _gun.transform.position += new Vector3(0.54f, 2.47f, -15.26f);
+        _gun.transform.rotation = Quaternion.Euler(0.32f, 0.068f, 0.19f);
+        */
+
+    }
 }
